@@ -27,7 +27,7 @@ void get_path(int x, int ANS, int END)
 }
 int main()
 {
-    freopen("xor.in", "r", stdin);
+    freopen("xor3.in", "r", stdin);
     freopen("xor.out", "w", stdout);
     int n, m, l, r, x;;
     scanf("%d%d", &n, &m);
