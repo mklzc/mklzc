@@ -65,20 +65,20 @@ const int N = 1e5 + 5;
 int c[N];
 vector<int> G[N];
 queue<int> q;
-int f[N][25], d[N], t;
+int f[N][22], depth[N], t;
 void bfs(int rt)
 {
     q.push(rt);
-    d[rt] = 1;
+    depth[rt] = 1;
     while (q.size())
     {
         int x = q.front();
         q.pop();
         for (auto y : G[x])
         {
-            if (d[y])
+            if (depth[y])
                 continue;
-            f[y][0] = x, d[y] = d[x] + 1;
+            f[y][0] = x, depth[y] = depth[x] + 1;
             for (int j = 1; j <= t; j++)
                 f[y][j] = f[f[y][j - 1]][j - 1];
             q.push(y);
@@ -87,10 +87,10 @@ void bfs(int rt)
 }
 int lca(int x, int y)
 {
-    if (d[x] > d[y])
+    if (depth[x] > depth[y])
         swap(x, y);
     for (int i = t; i >= 0; i--)
-        if (d[f[y][i]] >= d[x])
+        if (depth[f[y][i]] >= depth[x])
             y = f[y][i];
     if (x == y)
         return x;
@@ -101,8 +101,10 @@ int lca(int x, int y)
 }
 int main()
 {
-    int n;
-    read(n);
+    freopen("color.in", "r", stdin);
+    freopen("color.out", "w", stdout);
+    int n, d, k;
+    read(n, d, k);
     for (int i = 1; i <= n; i++)
         read(c[i]);
     for (int i = 1; i <= n - 1; i++)
@@ -112,8 +114,12 @@ int main()
         G[u].push_back(v);
         G[v].push_back(u);
     }
+    bfs(1);
+    int cnt = 0;
     for (int i = 1; i <= n; i++)
         for (int j = i + 1; j <= n; j++)
-            printf("%d\n", d[i] + d[j] - 2 * d[lca(i, j)]);
+            if (depth[i] + depth[j] - 2 * depth[lca(i, j)] == d && abs(c[i] - c[j]) <= k) cnt++;
+            
+    write(cnt, '\n');
     return 0;
 }
