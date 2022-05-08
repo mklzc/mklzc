@@ -25,6 +25,17 @@ void get_path(int x, int ANS, int END)
         get_path(y, ANS ^ z, END);
     }
 }
+void dfs(int x)
+{
+    for (auto a : G[x])
+    {
+        int y = a.to, z = a.cost;
+        if (v[y]) continue;
+        v[y] = 1;
+        s[y] = s[x] ^ z;
+        dfs(y);
+    }
+}
 int main()
 {
     freopen("xor4.in", "r", stdin);
@@ -51,10 +62,12 @@ int main()
         G[l - 1].push_back(b), G[r].push_back(a);
         fa[get(l - 1)] = get(r);
     }
+    memset(v, 0, sizeof(v));
     for (int i = 0; i <= n; i++)
-        for (auto a : G[i])
-            // if (a.to > i) 
-            s[a.to] = s[i] ^ a.cost;
+        if(!v[i]) dfs(i);
+    for (int i = 1; i <= n; i++)
+        s[i] ^= s[0];
+    s[0] = 0;
     for (int i = 1; i <= n; i++)
         printf("%d ", s[i] ^ s[i - 1]);
     printf("\n");
