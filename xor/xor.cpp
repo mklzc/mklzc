@@ -38,7 +38,7 @@ void dfs(int x)
 }
 int main()
 {
-    freopen("xor4.in", "r", stdin);
+    freopen("xor.in", "r", stdin);
     freopen("xor.out", "w", stdout);
     int n, m, l, r, x;
     scanf("%d%d", &n, &m);
