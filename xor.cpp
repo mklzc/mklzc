@@ -11,14 +11,12 @@ struct Node
 vector<Node> G[N];
 void add(int x, int y, int z)
 {
-    Node a;
-    a.to = y, a.cost = z;
+    Node a = {to: y, cost: z};
     G[x].push_back(a);
 }
 int get(int x)
 {
-    if (fa[x] != x)
-        return fa[x] = get(fa[x]);
+    if (fa[x] != x) return fa[x] = get(fa[x]);
     return fa[x];
 }
 
@@ -26,8 +24,7 @@ int ans, flag;
 void find_circle(int x, int ANS, int END)
 {
     if (flag) return;
-    if (x == END)
-        return void(flag = 1), void(ans ^= ANS);
+    if (x == END) return void(flag = 1), void(ans ^= ANS);
     for (int i = 0; i < G[x].size(); i++)
     {
         int y = G[x][i].to, z = G[x][i].cost;
@@ -41,8 +38,7 @@ int main()
     freopen("in", "r", stdin);
     int n, m;
     scanf("%d%d", &n, &m);
-    for (int i = 1; i <= n; i++)
-        fa[i] = i;
+    for (int i = 1; i <= n; i++) fa[i] = i;
     while (m--)
     {
         int l, r, x;
@@ -57,24 +53,42 @@ int main()
                 {puts("No");continue;}
         }
         puts("Yes");
-        // cout << l - 1 << " " << r << endl;
-        add(l - 1, r, x);
-        add(r, l - 1, x);
+        Node a = {to: l - 1, cost: x}, b = {to: r, cost: x};
+        G[l - 1].push_back(b);
+        G[r].push_back(a);
         fa[get(l - 1)] = get(r);
     }
     s[0] = 0;
     for (int i = 0; i <= n; i++)
-    {
         for (int j = 0; j < G[i].size(); j++)
         {
             int y = G[i][j].to, z = G[i][j].cost;
             if (y <= i) continue;
-            // cout << i << " " << y << " " << z << endl;
             s[y] = s[i] ^ z;
         }
-    }
     for (int i = 1; i <= n; i++)
         printf("%d ", s[i] ^ s[i - 1]);
     printf("\n");
     return 0;
 }
+/*
+Sample2:
+
+5 6
+1 4 4
+2 3 3
+1 4 2
+2 5 3 
+1 1 1
+4 5 1
+
+stdout:
+Yes
+Yes
+No
+Yes
+Yes
+No
+1 1 2 6 6
+
+*/
