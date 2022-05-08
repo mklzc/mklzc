@@ -49,7 +49,6 @@ int main()
         G[l - 1].push_back(b), G[r].push_back(a);
         fa[get(l - 1)] = get(r);
     }
-    s[0] = 0;
     for (int i = 0; i <= n; i++)
         for (auto a : G[i])
             if (a.to > i) s[a.to] = s[i] ^ a.cost;
