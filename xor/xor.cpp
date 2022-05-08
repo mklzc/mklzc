@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 1e5 + 5;
-int s[N], fa[N], v[N], ans, flag;;
+int s[N], fa[N], v[N], ans, flag;
 struct Node
 {
     int to;
