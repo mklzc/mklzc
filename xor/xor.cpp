@@ -49,7 +49,6 @@ namespace FastIO {
 using FastIO::read;
 using FastIO::write;
 
-
 const int N = 1e5 + 5;
 int s[N], fa[N], v[N], ans, flag;
 struct Node
