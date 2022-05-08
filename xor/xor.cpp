@@ -27,9 +27,9 @@ void get_path(int x, int ANS, int END)
 }
 int main()
 {
-    freopen("xor3.in", "r", stdin);
+    freopen("xor4.in", "r", stdin);
     freopen("xor.out", "w", stdout);
-    int n, m, l, r, x;;
+    int n, m, l, r, x;
     scanf("%d%d", &n, &m);
     for (int i = 1; i <= n; i++) fa[i] = i;
     while (m--)
@@ -41,6 +41,8 @@ int main()
             ans = 0, flag = 0;
             get_path(l - 1, 0, r), flag = 0;
             get_path(r, 0, l - 1);
+            for (auto a : G[l - 1])
+                if (a.to == r) ans = a.cost;
             if (ans != x)
                 {puts("No");continue;}
         }
@@ -51,7 +53,8 @@ int main()
     }
     for (int i = 0; i <= n; i++)
         for (auto a : G[i])
-            if (a.to > i) s[a.to] = s[i] ^ a.cost;
+            // if (a.to > i) 
+            s[a.to] = s[i] ^ a.cost;
     for (int i = 1; i <= n; i++)
         printf("%d ", s[i] ^ s[i - 1]);
     printf("\n");
