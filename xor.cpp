@@ -3,13 +3,17 @@ using namespace std;
 const int N = 1e3 + 5;
 int s[N];
 int fa[N], v[N];
-int ver[N], head[N], Next[N], edge[N], idx;
+struct Node
+{
+    int to;
+    int cost;
+};
+vector<Node> G[N];
 void add(int x, int y, int z)
 {
-    ver[++idx] = y;
-    edge[idx] = z;
-    Next[idx] = head[x];
-    head[x] = idx;
+    Node a;
+    a.to = y, a.cost = z;
+    G[x].push_back(a);
 }
 int get(int x)
 {
@@ -24,18 +28,17 @@ void find_circle(int x, int ANS, int END)
     if (flag) return;
     if (x == END)
         return void(flag = 1), void(ans ^= ANS);
-    for (int i = head[x]; ~i; i = Next[i])
+    for (int i = 0; i < G[x].size(); i++)
     {
-        int y = ver[i];
+        int y = G[x][i].to, z = G[x][i].cost;
         if (v[y]) continue;
         v[y] = 1;
-        find_circle(y, ANS ^ edge[i], END);
+        find_circle(y, ANS ^ z, END);
     }
 }
 int main()
 {
     freopen("in", "r", stdin);
-    memset(head, -1, sizeof(head));
     int n, m;
     scanf("%d%d", &n, &m);
     for (int i = 1; i <= n; i++)
@@ -54,17 +57,24 @@ int main()
                 {puts("No");continue;}
         }
         puts("Yes");
-        cout << l - 1 << " " << r << endl;
+        // cout << l - 1 << " " << r << endl;
         add(l - 1, r, x);
         add(r, l - 1, x);
         fa[get(l - 1)] = get(r);
     }
+    s[0] = 0;
     for (int i = 0; i <= n; i++)
     {
-        for (int j = head[i]; ~j; j = Next[j])
+        for (int j = 0; j < G[i].size(); j++)
         {
-            cout << i << " " <<  ver[i] << " " << edge[i] << endl;
+            int y = G[i][j].to, z = G[i][j].cost;
+            if (y <= i) continue;
+            // cout << i << " " << y << " " << z << endl;
+            s[y] = s[i] ^ z;
         }
     }
+    for (int i = 1; i <= n; i++)
+        printf("%d ", s[i] ^ s[i - 1]);
+    printf("\n");
     return 0;
 }
